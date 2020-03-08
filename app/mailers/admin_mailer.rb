@@ -4,7 +4,6 @@ class AdminMailer < ApplicationMailer
   def low_coins(coin)
     @total = Coin.coin_total
     @coin = coin
-    puts coin.inspect
     @addresses = []
     Admin.all.each do |email|
       @addresses.push(email.email)
