@@ -58,14 +58,15 @@ RSpec.describe 'Transactions API' do
     end
 
     context 'when invalid request' do
-      before { post "/transactions", params: {transaction_type: "deposit"} }
+      before { post "/transactions", params: {} }
 
-      it 'returns status code 422' do
-        expect(response).to have_http_status(422)
+      it 'returns status code 404' do
+        expect(response).to have_http_status(404)
       end
 
       it 'returns a failure message' do
-        expect(response.body).to match(/Validation failed: Coin must exist, Api user can't be blank/)
+        puts response.body
+        expect(response.body).to match(/Couldn't find Coin without an ID/)
       end
     end
   end

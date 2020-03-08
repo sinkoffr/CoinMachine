@@ -19,12 +19,25 @@ class TransactionsController < ApplicationController
 
   #POST /transactions
   def create
-    if transaction_params['transaction_type'].downcase != "deposit" && transaction_params['transaction_type'] != "withdrawl"
-      error_response("Incorrect Transaction Type")
-    else
+    @coin = Coin.find(params['coin_id'])
+    if transaction_params['transaction_type'].downcase == "deposit"
+      if @coin.present?
+        count = @coin.count + 1
+        @coin.update(count: count)
+      end
       @transaction = Transaction.create!(transaction_params)
       json_response(@transaction, :created)
+    elsif transaction_params['transaction_type'].downcase == "withdrawl"
+      if @coin.present?
+        count = @coin.count - 1
+        @coin.update(count: count)
+      end
+      @transaction = Transaction.create!(transaction_params)
+      json_response(@transaction, :created)
+    else 
+      json_response(@transaction)
     end
+
   end
 
   #PUT /transactions/:id
@@ -37,7 +50,7 @@ class TransactionsController < ApplicationController
     end
   end
 
-  
+
 
   private
 
