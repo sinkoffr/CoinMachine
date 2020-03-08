@@ -30,7 +30,15 @@ class TransactionsController < ApplicationController
     elsif transaction_params['transaction_type'].downcase == "withdrawl"
       if @coin.present?
         count = @coin.count - 1
-        @coin.update(count: count)
+        if count >= 0
+          @coin.update(count: count)
+          if count <= 4
+            @transaction.send_email(@coin)
+          end
+        else
+          error_response("Sorry, there are not enough coins for this transaction.")
+          #TODO gracefully handle error due to not enough coins
+        end
       end
       @transaction = Transaction.create!(transaction_params)
       json_response(@transaction, :created)

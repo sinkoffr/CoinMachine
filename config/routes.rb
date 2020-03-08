@@ -10,4 +10,6 @@ Rails.application.routes.draw do
   scope 'transactions/transaction' do
     get '/:api_user'    => 'transactions#get_by_api_user'
   end
+
+  resources :admins
 end

@@ -1,7 +1,7 @@
 class CoinsController < ApplicationController
   include ActionController::HttpAuthentication::Token::ControllerMethods
   before_action :set_coin, only: [:show, :update, :destroy]
-  # before_action :restrict_access
+  before_action :restrict_access
 
   #GET /coins
   def index
@@ -34,13 +34,7 @@ class CoinsController < ApplicationController
 
   #GET /coins/total
   def total
-    @coins = Coin.all
-    @total = 0
-    @coins.each do |coin|
-      @value = ((coin.value).to_f * coin.count)
-      @total += @value
-    end
-    
+    Coin.coin_total
     json_response(@total, :ok)
 
   end
