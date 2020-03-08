@@ -36,8 +36,8 @@ class CoinsController < ApplicationController
   def total
     @coins = Coin.all
     @total = 0
-    @coins.each do |value|
-      @value = (value.value).to_f
+    @coins.each do |coin|
+      @value = ((coin.value).to_f * coin.count)
       @total += @value
     end
     
@@ -48,7 +48,7 @@ class CoinsController < ApplicationController
   private
 
   def coin_params
-    params.permit(:name, :value)
+    params.permit(:name, :value, :count)
   end
 
   def set_coin

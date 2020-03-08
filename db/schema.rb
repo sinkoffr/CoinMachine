@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_07_203251) do
+ActiveRecord::Schema.define(version: 2020_03_08_021828) do
 
   create_table "api_keys", force: :cascade do |t|
     t.string "access_token"
@@ -23,6 +23,7 @@ ActiveRecord::Schema.define(version: 2020_03_07_203251) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "count", default: 0, null: false
   end
 
   create_table "transactions", force: :cascade do |t|
@@ -30,6 +31,7 @@ ActiveRecord::Schema.define(version: 2020_03_07_203251) do
     t.integer "coin_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "transaction_type", default: "deposit", null: false
     t.index ["coin_id"], name: "index_transactions_on_coin_id"
   end
 

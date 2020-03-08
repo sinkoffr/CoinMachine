@@ -2,7 +2,8 @@ require 'rails_helper'
 
 RSpec.describe 'Transactions API' do
   let!(:coin) { create(:coin) }
-  let!(:transactions) { create_list(:transaction, 20, coin_id: coin.id) }
+  let(:transaction_type) { "DEPOSIT" }
+  let!(:transactions) { create_list(:transaction, 20, coin_id: coin.id, transaction_type: transaction_type) }
   let(:coin_id) { coin.id }
   let(:api_id) { transactions.first.api_user }
   let(:id) { transactions.first.id }
@@ -46,7 +47,7 @@ RSpec.describe 'Transactions API' do
   end
 
   describe 'POST /transactions' do
-    let(:valid_attributes) { { coin_id: coin_id, api_user: api_id } }
+    let(:valid_attributes) { { coin_id: coin_id, api_user: api_id, transaction_type: transaction_type } }
 
     context 'when request attributes are valid' do
       before { post "/transactions", params: valid_attributes }
@@ -57,7 +58,7 @@ RSpec.describe 'Transactions API' do
     end
 
     context 'when invalid request' do
-      before { post "/transactions", params: {} }
+      before { post "/transactions", params: {transaction_type: "deposit"} }
 
       it 'returns status code 422' do
         expect(response).to have_http_status(422)
@@ -96,7 +97,7 @@ RSpec.describe 'Transactions API' do
   end
 
   describe 'PUT /transactions/:id' do
-    let(:valid_attributes) { { coin_id: coin.id } }
+    let(:valid_attributes) { { coin_id: coin.id, transaction_type: transaction_type } }
 
     before { put "/transactions/#{id}", params: valid_attributes }
 
