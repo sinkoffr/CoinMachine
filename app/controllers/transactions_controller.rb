@@ -1,5 +1,6 @@
 class TransactionsController < ApplicationController
   before_action :get_transaction, only: [:show, :update]
+  before_action :restrict_access
 
   #GET /transactions
   def index
@@ -68,5 +69,11 @@ class TransactionsController < ApplicationController
 
   def get_transaction
     @transaction = Transaction.find(params[:id])
+  end
+
+  def restrict_access
+    authenticate_or_request_with_http_token do | token, options |
+      ApiKey.exists?(access_token: token)
+    end
   end
 end
